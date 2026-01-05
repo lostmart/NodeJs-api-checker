@@ -403,7 +403,7 @@ Total issues: 8
 
 ### GitHub PR Review
 
-![Example Review](https://via.placeholder.com/800x400?text=Inline+Comments+on+Problematic+Lines)
+![Example Review](./review.png)
 
 ## 🤝 Contributing
 
