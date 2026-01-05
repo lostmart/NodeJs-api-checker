@@ -42,6 +42,7 @@ A GitHub bot for automated code reviews of Node.js REST APIs. Designed for educa
 ## ✨ Features
 
 ### 1. Issue Creation
+
 Creates comprehensive GitHub issues with:
 
 - Severity-based categorization (Critical, Warning, Info)
@@ -68,11 +69,21 @@ Creates pull requests with:
 - Ready-to-merge or learn-from code
 
 ### 4. Local Analysis
+
 Analyze repositories without GitHub interaction:
 
 - See results in terminal
 - No GitHub API calls
 - Perfect for testing
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ installed
+- Git installed
+- GitHub account
+- GitHub Personal Access Token
 
 ## Installation
 
@@ -81,6 +92,69 @@ npm install -g nodejs-api-checker
 ```
 
 ## Usage
+
+1. **Clone the repository**
+
+```bash
+   git clone https://github.com/lostmart/NodeJs-api-checker
+   cd nodejs-api-checker
+```
+
+2. **Install dependencies**
+
+```bash
+   npm install
+```
+
+3. **Create GitHub Personal Access Token**
+
+   - Go to: https://github.com/settings/tokens
+   - Click "Generate new token (classic)"
+   - Name: "API Checker Bot"
+   - Select scopes:
+     - ✅ `repo` (full control of repositories)
+     - ✅ `workflow` (optional)
+   - Generate and copy the token
+
+4. **Configure environment variables**
+
+```bash
+   cp .env.example .env
+```
+
+- Edit `.env` and add:
+
+```bash
+   GITHUB_TOKEN=ghp_your_token_here
+   GITHUB_USERNAME=your_github_username
+```
+
+5. **Test authentication**
+
+```bash
+   npm start analyze https://github.com/octocat/Hello-World
+```
+
+### Basic Commands
+
+```bash
+# Analyze a repository (local only, no GitHub interaction)
+npm start analyze
+
+# Create a GitHub issue with findings
+npm start issue
+
+# Review all open pull requests
+npm start review
+
+# Create a fix PR for critical issues
+npm start fix
+
+# Show help
+npm start -- --help
+```
+
+### Real-World Examples
 
 ```bash
 # When student gives you access to their repo:
