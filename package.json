@@ -6,7 +6,8 @@
 	"type": "module",
 	"scripts": {
 		"start": "node src/index.js",
-		"dev": "node --watch src/index.js"
+		"link": "npm link",
+		"unlink": "npm unlink -g nodejs-api-checker"
 	},
 	"keywords": [
 		"test",
@@ -15,7 +16,7 @@
 		"bot",
 		"review"
 	],
-	"author": "Martin P",
+	"author": "Mart (lostmart)",
 	"license": "MIT",
 	"dependencies": {
 		"@babel/parser": "^7.28.5",

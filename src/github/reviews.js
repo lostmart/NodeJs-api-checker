@@ -14,7 +14,8 @@ export class ReviewManager {
 				repo,
 				state: "open",
 			})
-			return data
+			// Filter out PRs created by the bot itself
+			return data.filter((pr) => pr.user.login !== this.username)
 		} catch (error) {
 			console.error(chalk.red("❌ Failed to get PRs:"), error.message)
 			throw error
