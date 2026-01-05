@@ -1,0 +1,9 @@
+node_modules
+.env
+temp/
+src/*
+node_modules/*
+node_modules
+*.db
+.DS_Store
+cloned-repos/
