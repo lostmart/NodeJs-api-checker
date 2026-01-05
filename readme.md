@@ -399,7 +399,7 @@ Total issues: 8
 
 ### GitHub Issue Created
 
-![Example Issue](https://via.placeholder.com/800x400?text=Comprehensive+Issue+with+Critical+Warnings+Suggestions)
+![Example Issue](./issue-created.png)
 
 ### GitHub PR Review
 
