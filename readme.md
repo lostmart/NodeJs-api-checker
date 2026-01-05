@@ -417,3 +417,7 @@ Contributions welcome! Areas for improvement:
 ## 📝 License
 
 MIT License - See LICENSE file for details
+
+**Questions?** Open an issue or contact [@lostmart](https://github.com/lostmart)
+
+**Star ⭐ this repo** if you find it useful for teaching or code review!
