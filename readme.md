@@ -289,6 +289,20 @@ Students must:
 - Scale to hundreds of students
 - Immediate feedback loop
 
+## 📚 For Students
+
+**New to the review bot?** Check out the comprehensive guide for students:
+
+👉 **[Student Guide: Working with the API Review Bot](https://parallel-page-ca8.notion.site/Working-with-the-API-Review-Bot-2e0b87ff4fc180f994b1e495e54b58ae?pvs=74)**
+
+This guide covers:
+
+- How to give your instructor access
+- Understanding bot reviews (Issues, PRs, Comments)
+- Step-by-step workflow for responding to feedback
+- Common issues and how to fix them
+- FAQ and troubleshooting
+
 ### Development Teams
 
 **Code Onboarding**
