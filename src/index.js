@@ -45,6 +45,15 @@ program
 		await runFixCommand(repoUrl)
 	})
 
+// Command: Cleanup Bot Branches
+program
+	.command("cleanup <repo-url>")
+	.description("Delete branches from closed/merged bot PRs")
+	.option("-a, --all", "Delete all bot branches (including open PRs)")
+	.action(async (repoUrl, options) => {
+		await runCleanupCommand(repoUrl, options)
+	})
+
 // Command: Analyze (local only, no GitHub interaction)
 program
 	.command("analyze <repo-url>")
@@ -389,6 +398,43 @@ async function runAnalyzeCommand(repoUrl) {
 				'\n💡 Tip: Use "issue" or "review" commands to post results to GitHub.\n'
 			)
 		)
+	} catch (error) {
+		spinner.fail(chalk.red("Error"))
+		console.error(chalk.red(`\n❌ ${error.message}\n`))
+		process.exit(1)
+	}
+}
+
+async function runCleanupCommand(repoUrl, options) {
+	const spinner = ora("Starting cleanup...").start()
+
+	try {
+		// Setup
+		const githubClient = new GitHubClient()
+		spinner.text = "Authenticating with GitHub..."
+		await githubClient.verifyAuth()
+
+		const { owner, repo } = githubClient.parseRepoUrl(repoUrl)
+		spinner.succeed(chalk.green(`Authenticated as ${githubClient.username}`))
+
+		console.log(
+			chalk.blue(`\n🧹 Cleaning up bot branches in: ${owner}/${repo}\n`)
+		)
+
+		const prManager = new PullRequestManager(githubClient)
+		const result = await prManager.cleanupAllBotBranches(owner, repo)
+
+		// Summary
+		console.log(chalk.bold("\n📊 CLEANUP SUMMARY"))
+		console.log("─".repeat(50))
+		console.log(chalk.green(`  Deleted: ${result.deleted} branch(es)`))
+		console.log(chalk.yellow(`  Skipped: ${result.skipped} branch(es)`))
+
+		if (result.deleted > 0) {
+			console.log(chalk.green("\n✨ Cleanup complete!\n"))
+		} else {
+			console.log(chalk.blue("\n💡 No branches to clean up.\n"))
+		}
 	} catch (error) {
 		spinner.fail(chalk.red("Error"))
 		console.error(chalk.red(`\n❌ ${error.message}\n`))

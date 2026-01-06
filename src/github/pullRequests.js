@@ -294,4 +294,101 @@ This PR addresses security issues found in automated review.`)
 			return false
 		}
 	}
+
+	// Clean up a specific branch
+	async cleanupBranch(owner, repo, branchName) {
+		try {
+			await this.octokit.rest.git.deleteRef({
+				owner,
+				repo,
+				ref: `heads/${branchName}`,
+			})
+			console.log(chalk.green(`  ✓ Deleted branch: ${branchName}`))
+			return true
+		} catch (error) {
+			if (error.status === 422) {
+				console.log(chalk.yellow(`  ⚠️  Branch ${branchName} already deleted`))
+			} else {
+				console.warn(
+					chalk.yellow(`  ⚠️  Could not delete ${branchName}: ${error.message}`)
+				)
+			}
+			return false
+		}
+	}
+
+	// Find all PRs created by the bot
+	async getBotPRs(owner, repo, state = "all") {
+		try {
+			const { data } = await this.octokit.rest.pulls.list({
+				owner,
+				repo,
+				state, // 'open', 'closed', or 'all'
+				creator: this.username,
+			})
+			return data
+		} catch (error) {
+			console.error(chalk.red("❌ Failed to get bot PRs:"), error.message)
+			throw error
+		}
+	}
+
+	// Clean up all merged or closed bot PRs
+	async cleanupAllBotBranches(owner, repo) {
+		console.log(chalk.blue("\n🧹 Finding bot branches to clean up...\n"))
+
+		try {
+			// Get all PRs created by the bot
+			const allBotPRs = await this.getBotPRs(owner, repo, "all")
+
+			if (allBotPRs.length === 0) {
+				console.log(chalk.yellow("No bot PRs found in this repository"))
+				return { deleted: 0, skipped: 0 }
+			}
+
+			console.log(
+				chalk.blue(
+					`Found ${allBotPRs.length} PR(s) created by ${this.username}\n`
+				)
+			)
+
+			let deleted = 0
+			let skipped = 0
+
+			for (const pr of allBotPRs) {
+				const status =
+					pr.state === "open" ? chalk.green("OPEN") : chalk.gray("CLOSED")
+				console.log(`PR #${pr.number}: ${pr.title} [${status}]`)
+				console.log(`   Branch: ${pr.head.ref}`)
+
+				if (pr.state === "open") {
+					console.log(chalk.yellow("   ⏭️  Skipping (PR still open)\n"))
+					skipped++
+					continue
+				}
+
+				// Check if merged or closed
+				if (pr.merged_at) {
+					console.log(chalk.green("   ✅ PR was merged"))
+				} else {
+					console.log(chalk.gray("   ⊘ PR was closed without merging"))
+				}
+
+				// Delete the branch
+				const success = await this.cleanupBranch(owner, repo, pr.head.ref)
+				if (success) {
+					deleted++
+				} else {
+					skipped++
+				}
+
+				console.log()
+			}
+
+			return { deleted, skipped }
+		} catch (error) {
+			console.error(chalk.red("❌ Cleanup failed:"), error.message)
+			throw error
+		}
+	}
 }
