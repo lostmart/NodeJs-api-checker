@@ -316,6 +316,38 @@ Students must:
 5. **Post** to GitHub (issue/review/PR) or display locally
 6. **Cleanup** cloned repository
 
+### Workflow
+
+📝 YOU: Push code to GitHub
+------------- ↓ -------------
+🤖 BOT: Reviews your code automatically (collaborator)
+------------- ↓ -------------
+📋 GITHUB: Issue created with findings
+------------- ↓ -------------
+🔍 YOU: Read the issue
+------------- ↓ -------------
+💻 YOU: Fix the problems in a new branch
+------------- ↓ -------------
+🔀 YOU: Open a Pull Request (PR)
+------------- ↓ -------------
+🤖 BOT: Reviews your PR (collaborator) - The fixing-branch will be deleted (clean up)
+------------- ↓ -------------
+┌───────────────────┬──────────────────────────┐
+│ ------------------│ -------------------------│
+| ✅ APPROVED ------|-- 🔴 CHANGES REQUESTED --│
+│ ------------------│ -------------------------│
+(No critical issues)|(Critical issues found)
+↓ ----------------- ↓ ------------------------ ↓
+🎉 YOU: Merge PR! 💻 YOU: Fix more issues
+↓ ----------------- ↓ ------------------------ ↓
+🔀 Push to same PR
+↓ ----------------- ↓ ------------------------ ↓
+🤖 BOT: Reviews again
+↓ ----------------- ↓ ------------------------ ↓
+✅ Loop until approved
+│ ----------------- │ ------------------------ │
+└───────────────────┴──────────────────────────┘
+
 ### Architecture
 
 ```
